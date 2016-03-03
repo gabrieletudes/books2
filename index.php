@@ -17,8 +17,22 @@
     sprintf; des jocker sprinte
 */
 
+
 /*DEmmarrer la connection*/
+/*chemin de inclusion*/
+
+/*definition du chemain d'inlusion, pour faciliter les include*/
+
+$viewsDir = __DIR__.'/views';/*mon chemin plus mon dossier*/
+
+$modelsDir = __DIR__.'/models';
+
+$includePath = $viewsDir.PATH_SEPARATOR.$modelsDir.PATH_SEPARATOR.get_include_path();
+
+set_include_path($includePath);
+
 $dbConfig = parse_ini_file('db.ini');
+
 /*nous permet de choisir de tableaus de objet*/
 $pdoOptions = [
     PDO::ATTR_DEFAULT_FETCH_MODE =>PDO::FETCH_OBJ,
@@ -39,11 +53,20 @@ try{
     die($exception->getMessage());
 
 }
-/**/
-$sqlBooks = 'SELECT * FROM books';
 
-$pdoSt = $cn->query($sqlBooks);
+$a = isset($_REQUEST['a'])?$_REQUEST['a']:'index';//lister les livres
 
-$books = $pdoSt->fetchAll();
+$e = isset($_REQUEST['e'])?$_REQUEST['e']:'books';
+
+include ('books.php');
+
+if(isset($_GET['id'])){
+    $id = intval($_GET['id']);
+    $data = getBook($id);
+
+}else{
+    $data = getBooks();
+}
+
 /*3) vue */
-include 'vieuw.php';
+include ('vieuw.php');
