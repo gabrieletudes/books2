@@ -17,12 +17,19 @@
     sprintf; des jocker sprinte
 */
 
+/*DEmmarrer la connection*/
 $dbConfig = parse_ini_file('db.ini');
+/*nous permet de choisir de tableaus de objet*/
+$pdoOptions = [
+    PDO::ATTR_DEFAULT_FETCH_MODE =>PDO::FETCH_OBJ,
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+
+];
 
 try{
     $dsn = sprintf('%s:dbname=%s;host=%s', $dbConfig['driver'], $dbConfig['dbname'], $dbConfig['host']);
 
-    $cn = new PDO($dsn, $dbConfig['username'], $dbConfig['password']);
+    $cn = new PDO($dsn, $dbConfig['username'], $dbConfig['password'], $pdoOptions);
 
     $cn->exec('SET CHARACTER SET UTF8');
 
@@ -32,11 +39,11 @@ try{
     die($exception->getMessage());
 
 }
-
+/**/
 $sqlBooks = 'SELECT * FROM books';
 
 $pdoSt = $cn->query($sqlBooks);
 
 $books = $pdoSt->fetchAll();
-
-var_dump($books);
+/*3) vue */
+include 'vieuw.php';
