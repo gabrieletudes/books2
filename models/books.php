@@ -1,16 +1,14 @@
 <?php
-
+/*
+ * requette sql ne s'ocupe pas de lavue eller recupere et returne*/
 function getBooks(){
-    /**/
+
     $sqlBooks = 'SELECT * FROM books';
 
     $pdoSt = $GLOBALS['cn']->query($sqlBooks);//on accede avec $Globals
 
-    $books = $pdoSt->fetchAll();
+    return $pdoSt->fetchAll();
 
-    $view = 'allbooks.php';
-
-    return ['books'=>$books, 'view'=>$view];
 }
 
 function getBook($id){
@@ -21,9 +19,6 @@ function getBook($id){
 
     $pdoSt->execute([':id' => $id]);
 
-    $book = $pdoSt->fetch();
+    return $pdoSt->fetch();
 
-    $view = 'singlebook.php';
-
-    return ['book'=>$book, 'view'=>$view];
 }

@@ -27,7 +27,9 @@ $viewsDir = __DIR__.'/views';/*mon chemin plus mon dossier*/
 
 $modelsDir = __DIR__.'/models';
 
-$includePath = $viewsDir.PATH_SEPARATOR.$modelsDir.PATH_SEPARATOR.get_include_path();
+$controllersDir = __DIR__.'/controllers';
+
+$includePath = $viewsDir.PATH_SEPARATOR.$modelsDir.PATH_SEPARATOR.$controllersDir.PATH_SEPARATOR.get_include_path();
 
 set_include_path($includePath);
 
@@ -54,19 +56,28 @@ try{
 
 }
 
-$a = isset($_REQUEST['a'])?$_REQUEST['a']:'index';//lister les livres
+include('routes.php');
 
-$e = isset($_REQUEST['e'])?$_REQUEST['e']:'books';
+$defaultRoute = $routes['default'];
 
-include ('books.php');
+$routeParts = explode('_', $defaultRoute);
 
-if(isset($_GET['id'])){
-    $id = intval($_GET['id']);
-    $data = getBook($id);
 
-}else{
-    $data = getBooks();
+$a = isset($_REQUEST['a'])?$_REQUEST['a']:$routeParts[0];//lister les livres
+
+$e = isset($_REQUEST['e'])?$_REQUEST['e']:$routeParts[1];
+
+
+if(!in_array($a.'_'.$e, $routes)){/*proteger nos fichiers de notre utilisateurs*/
+
+    //redirection 404
+
+    die('ce que vous cherchez n’est pas ici');
 }
+
+include ($e.'controller.php');
+
+$data = call_user_func($a);//on recupere des donnes produit par la fonction sticke dans le controlleur
 
 /*3) vue */
 include ('vieuw.php');
