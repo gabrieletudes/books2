@@ -1,21 +1,21 @@
 <?php
 /*
  * requette sql ne s'ocupe pas de la vue elle recupere et returne*/
-function getAuthors(){
+function getEditors(){
 
-    $sqlAuthors = 'SELECT * FROM editors';
+    $sqlEditors = 'SELECT * FROM editors';
 
-    $pdoSt = $GLOBALS['cn']->query($sqlAuthors);//on accede avec $Globals
+    $pdoSt = $GLOBALS['cn']->query($sqlEditors);//on accede avec $Globals
 
     return $pdoSt->fetchAll();
 
 }
 
-function getAuthor($id){
+function getEditor($id){
 
-    $sqlAuthor = 'SELECT * FROM editors WHERE id = :id';
+    $sqlEditor = 'SELECT * FROM editors WHERE id = :id';
 
-    $pdoSt = $GLOBALS['cn']->prepare($sqlAuthor);
+    $pdoSt = $GLOBALS['cn']->prepare($sqlEditor);
 
     $pdoSt->execute([':id' => $id]);
 
