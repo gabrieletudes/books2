@@ -56,12 +56,15 @@ try{
 
 }
 
+/*// Faire en sorte de afficher les autheurs*/
 include('routes.php');
 
 $defaultRoute = $routes['default'];
 
 $routeParts = explode('_', $defaultRoute);
 
+
+/*var_dump($routeParts);*/
 
 $a = isset($_REQUEST['a'])?$_REQUEST['a']:$routeParts[0];//lister les livres
 
