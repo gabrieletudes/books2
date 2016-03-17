@@ -23,5 +23,5 @@
 <?php endif; ?>
 
 <div class="">
-    <a href="<?php echo $_SERVER['PHP_SELF'] ?>">Tout les Auteurs</a>
+    <a href="?a=index&e=authors">Tout les Auteurs</a>
 </div>

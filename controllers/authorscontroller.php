@@ -1,5 +1,11 @@
 <?php
 
+namespace Controller;
+
+//space virtuelle, faciliter l'inclusion et eviter les colitions de noms
+
+use Model\Authors;
+
 class AuthorsController
 {
     private $authors_model = null;

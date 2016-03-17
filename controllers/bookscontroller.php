@@ -1,5 +1,11 @@
 <?php
 
+namespace Controller;
+
+use Model\Authors;
+use Model\Books;
+use Model\Editors;
+
 class BooksController
 {
     private $books_model = null;
@@ -36,11 +42,33 @@ class BooksController
 
             $book = $this->books_model->find($id);
 
+            $authors = null;
+            $editors = null;
+            if(isset($_GET['with'])){
+                $with = explode(',',$_GET['with']);
+                //authors dans l'array
+                if(in_array('authors',$with)){
+                    $authors_model = new Authors();
+                    $authors = $authors_model->getAuthorsByBookID($id);
+                }
+
+                if(in_array('editors',$with)){
+                    $editors_model = new Editors();
+                    $editors = $editors_model->getEditorsByBookId($id);
+                }
+            }
+
+
             $view = 'show_books.php';
 
             $page_title = 'La fiche du livre&nbsp;: '.$book->title;
 
-            return ['book' => $book, 'view' => $view, 'page_title' => $page_title]; /*returne un livre et son nom*/
+            return [
+                'book' => $book,
+                'view' => $view,
+                'page_title' => $page_title,
+                'authors'=>$authors,
+                'editors'=>$editors]; /*returne un livre et son nom*/
         }
     }
 

@@ -1,5 +1,11 @@
 <?php
 
+namespace Controller;
+
+//use = une classe de son fichier
+
+use Model\Editors;
+
 class EditorsController{
 
     private $editors_model = null;

@@ -23,5 +23,5 @@
 <?php endif; ?>
 
 <div class="">
-    <a href="<?php echo $_SERVER['PHP_SELF'] ?>">Tout les Editor</a>
+    <a href="?a=index&e=editors">Tout les Editor</a>
 </div>
