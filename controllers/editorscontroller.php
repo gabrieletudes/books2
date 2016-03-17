@@ -1,34 +1,47 @@
 <?php
 
-function index(){//on recupere les les livres et va se trouver dans la variable data
+class EditorsController{
 
-    include ('editors.php');
+    private $editors_model = null;
 
-    $editors = getEditors();
+    public function __construct()
+    {
+        $this->editors_model = new Editors();
+    }
 
-    $view = $GLOBALS['a'].'_'.$GLOBALS['e'].'.php';
-
-    return ['editors'=>$editors, 'view'=>$view];//returne
+    public function index(){//on recupere les les editeurs et va se trouver dans la variable data
 
 
-}
+        $editors = $this->editors_model->all();
 
-function show()//les donnes pour afficher un livre
+        $view ='index_editors.php';
+
+        return ['editors'=>$editors, 'view'=>$view, 'page_title'=>'Nos editeurs'];//returne
+
+
+    }
+
+   public function show()//les donnes pour afficher un livre
 
     {
-        include ('editors.php');
 
-    if(isset($_GET['id'])){
-        $id = intval($_GET['id']);
-        $editor = getEditor($id);
+        if(!isset($_GET['id'])){
+            //rediriger vers une page d'erreur
+            die('Il manque l indentifient de l’editeur');
 
-        $view = $GLOBALS['a'].'_'.$GLOBALS['e'].'.php';
+        }else{
+            $id = intval($_GET['id']);
 
-        return ['editor'=>$editor, 'view'=>$view]; /*returne un livre et son nom*/
+            $editor = $this->editors_model->find($id);
+
+            $view = 'show_editors.php';
+
+            $page_title = 'La nom de l’editeur&nbsp;: '.$editor->name;
+
+            return ['editor'=>$editor, 'view'=> $view, 'page_title' => $page_title]; /*returne un editeur, son nom et le title pour la page*/
 
 
-    }else{
-        //rediriger vers une page d'erreur
-        die('Il manque l indentifient de l’editeur');
+        }
     }
+
 }

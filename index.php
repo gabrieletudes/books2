@@ -23,38 +23,19 @@
 
 /*definition du chemain d'inlusion, pour faciliter les include*/
 
-$viewsDir = __DIR__.'/views';/*mon chemin plus mon dossier*/
+$viewsDir = __DIR__ . '/views';/*mon chemin plus mon dossier*/
 
-$modelsDir = __DIR__.'/models';
+$modelsDir = __DIR__ . '/models';
 
-$controllersDir = __DIR__.'/controllers';
+$controllersDir = __DIR__ . '/controllers';
 
-$includePath = $viewsDir.PATH_SEPARATOR.$modelsDir.PATH_SEPARATOR.$controllersDir.PATH_SEPARATOR.get_include_path();
+$includePath = $viewsDir . PATH_SEPARATOR . $modelsDir . PATH_SEPARATOR . $controllersDir . PATH_SEPARATOR . get_include_path();
 
 set_include_path($includePath);
 
-$dbConfig = parse_ini_file('db.ini');
-
-/*nous permet de choisir de tableaus de objet*/
-$pdoOptions = [
-    PDO::ATTR_DEFAULT_FETCH_MODE =>PDO::FETCH_OBJ,
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-
-];
-
-try{
-    $dsn = sprintf('%s:dbname=%s;host=%s', $dbConfig['driver'], $dbConfig['dbname'], $dbConfig['host']);
-
-    $cn = new PDO($dsn, $dbConfig['username'], $dbConfig['password'], $pdoOptions);
-
-    $cn->exec('SET CHARACTER SET UTF8');
-
-    $cn->exec('SET NAMES UTF8');
-}catch(PDOException $exception){
-    // redirection vers une page pour afficher une erreur relative à la connexion
-    die($exception->getMessage());
-
-}
+spl_autoload_register(function ($class) {
+    include($class . '.php');
+});
 
 /*// Faire en sorte de afficher les autheurs*/
 include('routes.php');
@@ -66,21 +47,24 @@ $routeParts = explode('_', $defaultRoute);
 
 /*var_dump($routeParts);*/
 
-$a = isset($_REQUEST['a'])?$_REQUEST['a']:$routeParts[0];//lister les livres
+$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : $routeParts[0];//lister les livres
 
-$e = isset($_REQUEST['e'])?$_REQUEST['e']:$routeParts[1];
+$e = isset($_REQUEST['e']) ? $_REQUEST['e'] : $routeParts[1];
 
 
-if(!in_array($a.'_'.$e, $routes)){/*proteger nos fichiers de notre utilisateurs*/
+if (!in_array($a . '_' . $e, $routes)) {/*proteger nos fichiers de notre utilisateurs*/
 
     //redirection 404
-
     die('ce que vous cherchez n’est pas ici');
 }
 
-include ($e.'controller.php');
+/*mettre en majuscule la premier character*/
+$controller_name = ucfirst($e) . 'Controller';
 
-$data = call_user_func($a);//on recupere des donnes produit par la fonction sticke dans le controlleur
+/*instancier*/
+$controller = new $controller_name();
+
+$data = call_user_func([$controller, $a]);//on recupere des donnes produit par la fonction sticke dans le controlleur
 
 /*3) vue */
-include ('vieuw.php');
+include('vieuw.php');

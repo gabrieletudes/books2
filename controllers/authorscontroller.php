@@ -1,34 +1,45 @@
 <?php
 
-function index(){//on recupere les les livres et va se trouver dans la variable data
+class AuthorsController
+{
+    private $authors_model = null;
 
-    include ('authors.php');
+    public function __construct()
+    {
+        $this->authors_model = new Authors();
+    }
 
-    $authors = getAuthors();
+    function index()
+    {//on recupere les les livres et va se trouver dans la variable data
 
-    $view = $GLOBALS['a'].'_'.$GLOBALS['e'].'.php';
+        $authors = $this->authors_model->all();
 
-    return ['authors'=>$authors, 'view'=>$view];//returne
+        $view = 'index_authors.php';
+
+        return ['authors' => $authors, 'view' => $view, 'page_title'=>'Nos Auteurs'];//returne
 
 
-}
+    }
 
-function show()//les donnes pour afficher un livre
+    function show()//les donnes pour afficher un livre
 
     {
-        include ('authors.php');
 
-    if(isset($_GET['id'])){
-        $id = intval($_GET['id']);
-        $author = getAuthor($id);
-
-        $view = $GLOBALS['a'].'_'.$GLOBALS['e'].'.php';
-
-        return ['author'=>$author, 'view'=>$view]; /*returne un livre et son nom*/
+        if (!isset($_GET['id'])) {
+            //rediriger vers une page d'erreur
+            die('Il manque l indentifient de l’auteur');
 
 
-    }else{
-        //rediriger vers une page d'erreur
-        die('Il manque l indentifient de l’auteur');
+        } else {
+            $id = intval($_GET['id']);
+
+            $author = $this->authors_model->find($id);
+
+            $view = 'show_authors.php';
+
+            $page_title = 'La nom de l’auteur&nbsp;: '.$author->name;
+
+            return ['author' => $author, 'view' => $view,'page_title' => $page_title]; /*returne un livre et son nom*/
+        }
     }
 }
