@@ -26,7 +26,7 @@
 <ul class="authors">
     <?php foreach( $data['authors']as $author)?>
         <li class="author">
-            <a href="?a=show&e=authors&id=<?php echo $author->id; ?>&with=books"><?php echo $author->name; ?></a>
+            Auteur: <a href="?a=show&e=authors&id=<?php echo $author->id; ?>&with=books"><?php echo $author->name; ?></a>
         </li>
         <?php ?>
 </ul>
@@ -36,7 +36,7 @@
     <ul class="editors">
         <?php foreach( $data['editors']as $editor )?>
         <li class="editor">
-            <a href="?a=show&e=editors&id=<?php echo $editor->id; ?>&with=books"><?php echo $editor->name; ?></a>
+            &Eacute;diteur: <a href="?a=show&e=editors&id=<?php echo $editor->id; ?>&with=books"><?php echo $editor->name; ?></a>
         </li>
         <?php ?>
 
