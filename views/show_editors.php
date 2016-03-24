@@ -22,6 +22,17 @@
 
 <?php endif; ?>
 
+<?php  if($data['authors']): ?>
+    <ul class="authors">
+        <h2>Les Autheurs qui ont publie chez cette &eacute;diteur:</h2>
+        <?php foreach( $data['authors']as $autheur ):?>
+            <li class="editor">
+                <a href="?a=show&e=authors&id=<?php echo $autheur->id; ?>&with=editors"><?php echo $autheur->name; ?></a>
+            </li>
+        <?php endforeach;?>
+    </ul>
+<?php endif; ?>
+
 <div class="">
-    <a href="?a=index&e=editors">Tout les Editor</a>
+    <a href="?a=index&e=editors">Tout les &eacute;diteurs</a>
 </div>
