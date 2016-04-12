@@ -49,7 +49,7 @@ class BooksController
                 //authors dans l'array
                 if(in_array('authors',$with)){
                     $authors_model = new Authors();
-                    $authors = $authors_model->getAuthorsByBookID($id);
+                    $authors = $authors_model->getAuthorsByBookId($id);
                 }
 
                 if(in_array('editors',$with)){
