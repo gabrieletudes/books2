@@ -18,14 +18,25 @@ class EditorsController{
 
     public function index(){//on recupere les les editeurs et va se trouver dans la variable data
 
+        if(!isset($_GET['page'])) {
+            $page = intval($_GET['page']);
+            
+            $editors = $this->editors_model->all($page);
+            
+        }else{
+            $page = intval($_GET['page']);
+            
+            $editors = $this->editors_model->all(0);
 
-        $editors = $this->editors_model->all();
 
+        }
         $view ='index_editors.php';
-
-        return ['editors'=>$editors, 'view'=>$view, 'page_title'=>'Nos editeurs'];//returne
-
+        return ['editors'=>$editors, 'view'=>$view, 'page_title'=>'Nos editeurs',
+            'page' =>$page];//returne
     }
+    
+    
+    
 
    public function show()//les donnes pour afficher un livre
 
