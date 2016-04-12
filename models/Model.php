@@ -3,15 +3,15 @@
 namespace Model;
 
 //par heritage ( extent ) le constructeur est copie dans les autres classe
-class Model{
+class Model
+{
 
     protected $table = '';
 
     protected $cn;
 
-    /**
-     * Model constructor.
-     */
+     //Model constructor.
+
     public function __construct()
     {
 
@@ -38,10 +38,16 @@ class Model{
     }
 
 
-    public function all()
+    public function all($page)
     {
 
-        $sql = sprintf('SELECT * FROM %s',$this->table);
+        if(!$page){
+            $sql = sprintf('SELECT * FROM %s', $this->table);
+        }else{
+            $start = 0;
+            $nb = 10;
+            $sql = sprint('SELECT * FROM %s LIMIT %s,%s', $this->table, $start, $nb);
+        }
 
         $pdoSt = $this->cn->query($sql);//on accede avec $Globals
 
@@ -51,8 +57,7 @@ class Model{
 
     public function find($id)
     {
-
-        $sql = sprintf('SELECT * FROM %s WHERE id = :id',$this->table);
+        $sql = sprintf('SELECT * FROM %s WHERE id = :id', $this->table);
 
         $pdoSt = $this->cn->prepare($sql);
 
